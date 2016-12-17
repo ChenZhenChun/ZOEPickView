@@ -118,16 +118,16 @@
 #pragma mark - UIPickerViewDataSource
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
-    
-    NSInteger component;
     if (_isLevelArray) {
-        component=_plistArray.count;
-    } else if (_isLevelString){
-        component=1;
-    }else if(_isLevelDic){
-        component=[_levelTwoDic allKeys].count*2;
+        return _plistArray.count;
     }
-    return component;
+    if (_isLevelString){
+        return 1;
+    }
+    if(_isLevelDic){
+        return [_levelTwoDic allKeys].count*2;
+    }
+    return 0;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {

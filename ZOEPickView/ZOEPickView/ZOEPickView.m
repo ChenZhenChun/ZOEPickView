@@ -219,8 +219,8 @@
 #pragma mark - Action
 #pragma mark - 移除控件
 - (void)remove {
-    [self removeFromSuperview];
     [self.bgView removeFromSuperview];
+    [self removeFromSuperview];
 }
 
 #pragma mark - 显示控件

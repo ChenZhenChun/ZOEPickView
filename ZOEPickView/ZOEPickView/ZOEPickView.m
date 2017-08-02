@@ -13,7 +13,8 @@
 {
     UIDatePickerMode _datePickerMode;
 }
-@property (nonatomic,copy)   void (^MyBolck)(ZOEPickView *pickView,NSString *resutStr,NSInteger index);
+@property (nonatomic,copy)   void (^MyBolck)(ZOEPickView *pickView,NSString *resultStr,NSInteger index);
+@property (nonatomic,copy)   void (^MyBolck2)(ZOEPickView *pickView,NSString *resultStr,NSString *resultIndex);
 @property (nonatomic,copy)   NSString               *plistName;
 @property (nonatomic,strong) NSArray                *plistArray;
 @property (nonatomic,assign) BOOL                   isLevelArray;
@@ -26,6 +27,7 @@
 @property (nonatomic,assign) BOOL                   isHaveNavControler;//底部是否有tabBar
 @property (nonatomic,assign) NSInteger              pickeviewHeight;
 @property (nonatomic,copy)   NSString               *resultString;
+@property (nonatomic,copy)   NSString               *resultIndex;
 @property (nonatomic,strong) NSMutableArray         *componentArray;
 @property (nonatomic,strong) NSMutableArray         *dicKeyArray;
 @property (nonatomic,copy)   NSMutableArray         *state;
@@ -72,7 +74,7 @@
     return self;
 }
 
-- (instancetype)initPickviewWithArray:(NSArray *)array isHaveNavControler:(BOOL)isHaveNavControler Block:(void (^)(ZOEPickView *pickView,NSString *resutStr,NSInteger index)) resutBlock {
+- (instancetype)initPickviewWithArray:(NSArray *)array isHaveNavControler:(BOOL)isHaveNavControler Block:(void (^)(ZOEPickView *pickView,NSString *resultStr,NSInteger index)) resultBlock {
     self=[super init];
     if (self) {
         _isDatePicker = NO;
@@ -83,7 +85,22 @@
         [self setFrameWith:isHaveNavControler];
         [self toolbar];
     }
-    _MyBolck = resutBlock;
+    _MyBolck = resultBlock;
+    return self;
+}
+
+- (instancetype)initPickviewWithArray:(NSArray *)array isHaveNavControler:(BOOL)isHaveNavControler block:(void (^)(ZOEPickView *pickView,NSString *resultStr,NSString *resultIndex)) resultBlock {
+    self=[super init];
+    if (self) {
+        _isDatePicker = NO;
+        self.plistArray = array;
+        [self setArrayClass:array];
+        [self pickerView];
+        [_pickerView selectRow:(self.plistArray.count>3 ? 3:0) inComponent:0 animated:YES];
+        [self setFrameWith:isHaveNavControler];
+        [self toolbar];
+    }
+    _MyBolck2 = resultBlock;
     return self;
 }
 
@@ -100,7 +117,7 @@
     return self;
 }
 
-- (instancetype)initDatePickWithDate:(NSDate *)defaulDate datePickerMode:(UIDatePickerMode)datePickerMode isHaveNavControler:(BOOL)isHaveNavControler  Block:(void (^)(ZOEPickView *pickView,NSString *resutStr,NSInteger index)) resutBlock {
+- (instancetype)initDatePickWithDate:(NSDate *)defaulDate datePickerMode:(UIDatePickerMode)datePickerMode isHaveNavControler:(BOOL)isHaveNavControler  Block:(void (^)(ZOEPickView *pickView,NSString *resultStr,NSInteger index)) resultBlock {
     self=[super init];
     if (self) {
         _datePickerMode = datePickerMode;
@@ -110,7 +127,21 @@
         [self setFrameWith:isHaveNavControler];
         [self toolbar];
     }
-    _MyBolck = resutBlock;
+    _MyBolck = resultBlock;
+    return self;
+}
+
+- (instancetype)initDatePickWithDate:(NSDate *)defaulDate datePickerMode:(UIDatePickerMode)datePickerMode isHaveNavControler:(BOOL)isHaveNavControler  block:(void (^)(ZOEPickView *pickView,NSString *resultStr,NSString *resultIndex)) resultBlock {
+    self=[super init];
+    if (self) {
+        _datePickerMode = datePickerMode;
+        _isDatePicker = YES;
+        self.datePickerTemp.datePickerMode = datePickerMode;
+        if (defaulDate)self.datePickerTemp.date = defaulDate;
+        [self setFrameWith:isHaveNavControler];
+        [self toolbar];
+    }
+    _MyBolck2 = resultBlock;
     return self;
 }
 
@@ -188,10 +219,12 @@
         [pickerView selectRow:0 inComponent:1 animated:YES];
     }
     if (_isLevelString) {
-        _resultString=_plistArray[row];
+        _resultString = _plistArray[row];
+        _resultIndex = [NSString stringWithFormat:@"%ld",(long)row];
         
     }else if (_isLevelArray){
         _resultString=@"";
+        _resultIndex = @"";
         if (![self.componentArray containsObject:@(component)]) {
             [self.componentArray addObject:@(component)];
         }
@@ -199,8 +232,19 @@
             if ([self.componentArray containsObject:@(i)]) {
                 NSInteger cIndex = [pickerView selectedRowInComponent:i];
                 _resultString=[NSString stringWithFormat:@"%@%@",_resultString,_plistArray[i][cIndex]];
+                if (_resultIndex&&_resultIndex.length>0) {
+                    _resultIndex = [NSString stringWithFormat:@"%@,%ld",_resultIndex,(long)cIndex];
+                }else {
+                    _resultIndex = [NSString stringWithFormat:@"%ld",(long)cIndex];
+                }
             }else{
                 _resultString=[NSString stringWithFormat:@"%@%@",_resultString,_plistArray[i][0]];
+                if (_resultIndex&&_resultIndex.length>0) {
+                    _resultIndex = [NSString stringWithFormat:@"%@,%d",_resultIndex,0];
+                }else {
+                    _resultIndex = [NSString stringWithFormat:@"%d",0];
+                }
+                
                           }
         }
     }else if (_isLevelDic){
@@ -215,6 +259,11 @@
             }
         }
     }
+}
+
+// 每列宽度
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
+    return 100;
 }
 #pragma mark - Action
 #pragma mark - 移除控件
@@ -261,10 +310,16 @@
             }else{
                 if (_isLevelString) {
                     _resultString=[NSString stringWithFormat:@"%@",_plistArray[0]];
+                    _resultIndex = @"0";
                 }else if (_isLevelArray){
                     _resultString=@"";
                     for (int i=0; i<_plistArray.count;i++) {
                         _resultString=[NSString stringWithFormat:@"%@%@",_resultString,_plistArray[i][0]];
+                        if (_resultIndex&&_resultIndex.length>0) {
+                            _resultIndex = [NSString stringWithFormat:@"%@,%d",_resultIndex,0];
+                        }else {
+                            _resultIndex = @"0";
+                        }
                     }
                 }else if (_isLevelDic){
                     
@@ -282,13 +337,17 @@
                     _resultString=[NSString stringWithFormat:@"%@%@",_state,_city];
                 }
             }
-            NSInteger row = [_pickerView selectedRowInComponent:0];
-            _resultString = [NSString stringWithFormat:@"%@",_plistArray[row]];
+//            NSInteger row = [_pickerView selectedRowInComponent:0];
+//            _resultString = [NSString stringWithFormat:@"%@",_plistArray[row]];
         }
     }
     if (_MyBolck) {
         _MyBolck(self,_resultString,[_pickerView selectedRowInComponent:0]);
         _MyBolck = nil;
+    }
+    if (_MyBolck2) {
+        _MyBolck2(self,_resultString,_resultIndex);
+        _MyBolck2 = nil;
     }
     if ([self.delegate respondsToSelector:@selector(toobarDonBtnHaveClick:resultString:resultIndex:)]) {
         [self.delegate toobarDonBtnHaveClick:self resultString:_resultString resultIndex:[_pickerView selectedRowInComponent:0]];

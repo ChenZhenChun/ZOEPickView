@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
 s.name              = "ZOEPickView"
 
 #更新代码必须修改版本号
-s.version           = "1.0.1"
+s.version           = "1.0.2"
 s.summary           = "a ZOEPickView for ios."
 s.description       = <<-DESC
 It is a ZOEPickView used on iOS, which implement by Objective-C.

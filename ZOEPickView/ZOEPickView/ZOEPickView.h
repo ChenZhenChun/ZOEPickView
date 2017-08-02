@@ -42,7 +42,9 @@
  *  @return 带有toolbar的pickview
  */
 - (instancetype)initPickviewWithArray:(NSArray *)array isHaveNavControler:(BOOL)isHaveNavControler;
-- (instancetype)initPickviewWithArray:(NSArray *)array isHaveNavControler:(BOOL)isHaveNavControler Block:(void (^)(ZOEPickView *pickView,NSString *resutStr,NSInteger index)) resutBlock;
+- (instancetype)initPickviewWithArray:(NSArray *)array isHaveNavControler:(BOOL)isHaveNavControler Block:(void (^)(ZOEPickView *pickView,NSString *resultStr,NSInteger index)) resultBlock;
+
+- (instancetype)initPickviewWithArray:(NSArray *)array isHaveNavControler:(BOOL)isHaveNavControler block:(void (^)(ZOEPickView *pickView,NSString *resultStr,NSString *resultIndex)) resultBlock;
 
 /**
  *  通过时间创建一个DatePicker
@@ -53,7 +55,8 @@
  *  @return 带有toolbar的datePicker
  */
 - (instancetype)initDatePickWithDate:(NSDate *)defaulDate datePickerMode:(UIDatePickerMode)datePickerMode isHaveNavControler:(BOOL)isHaveNavControler;
-- (instancetype)initDatePickWithDate:(NSDate *)defaulDate datePickerMode:(UIDatePickerMode)datePickerMode isHaveNavControler:(BOOL)isHaveNavControler  Block:(void (^)(ZOEPickView *pickView,NSString *resutStr,NSInteger index)) resutBlock;
+- (instancetype)initDatePickWithDate:(NSDate *)defaulDate datePickerMode:(UIDatePickerMode)datePickerMode isHaveNavControler:(BOOL)isHaveNavControler  Block:(void (^)(ZOEPickView *pickView,NSString *resultStr,NSInteger index)) resultBlock;
+- (instancetype)initDatePickWithDate:(NSDate *)defaulDate datePickerMode:(UIDatePickerMode)datePickerMode isHaveNavControler:(BOOL)isHaveNavControler  block:(void (^)(ZOEPickView *pickView,NSString *resultStr,NSString *resultIndex)) resultBlock;
 
 /**
  *   移除本控件

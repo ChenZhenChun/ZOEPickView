@@ -308,9 +308,10 @@
             if (_resultString) {
                 
             }else{
+                NSInteger row = [_pickerView selectedRowInComponent:0];
                 if (_isLevelString) {
-                    _resultString=[NSString stringWithFormat:@"%@",_plistArray[0]];
-                    _resultIndex = @"0";
+                    _resultString = [NSString stringWithFormat:@"%@",_plistArray[row]];
+                    _resultIndex = [NSString stringWithFormat:@"%ld",(long)row];
                 }else if (_isLevelArray){
                     _resultString=@"";
                     for (int i=0; i<_plistArray.count;i++) {
@@ -337,8 +338,6 @@
                     _resultString=[NSString stringWithFormat:@"%@%@",_state,_city];
                 }
             }
-//            NSInteger row = [_pickerView selectedRowInComponent:0];
-//            _resultString = [NSString stringWithFormat:@"%@",_plistArray[row]];
         }
     }
     if (_MyBolck) {

@@ -263,6 +263,9 @@
 
 // 每列宽度
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
+    if(_componentWidthBlock) {
+       return _componentWidthBlock(component);
+    }
     return 100;
 }
 #pragma mark - Action
@@ -375,6 +378,21 @@
     if (_titleLabel) {
         _titleLabel.textColor = toolbarTextColor;
     }
+}
+
+- (void)setToolbarLeftTextColor:(UIColor *)toolbarLeftTextColor {
+    _toolbarLeftTextColor = toolbarLeftTextColor;
+    [self.leftBtn setTitleColor:_toolbarLeftTextColor forState:UIControlStateNormal];
+}
+
+- (void)setToolbarRightTextColor:(UIColor *)toolbarRightTextColor {
+    _toolbarRightTextColor = toolbarRightTextColor;
+    [self.rightBtn setTitleColor:_toolbarRightTextColor forState:UIControlStateNormal];
+}
+
+- (void)setToolbarTitleTextColor:(UIColor *)toolbarTitleTextColor {
+    _toolbarTitleTextColor = toolbarTitleTextColor;
+    self.titleLabel.textColor = _toolbarTitleTextColor;
 }
 
 - (UIColor *)toolbarTextColor {

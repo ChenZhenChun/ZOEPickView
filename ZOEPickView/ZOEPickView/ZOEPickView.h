@@ -21,6 +21,10 @@
 @property (nonatomic,strong)    UIColor                 *datePickerBGColor;//设置datePicker的背景色
 @property (nonatomic,strong)    UIColor                 *toolbarBGColor;//设置toobar的背景颜色
 @property (nonatomic,strong)    UIColor                 *toolbarTextColor;//设置toobar的文字颜色
+@property (nonatomic,strong)    UIColor                 *toolbarLeftTextColor;
+@property (nonatomic,strong)    UIColor                 *toolbarTitleTextColor;
+@property (nonatomic,strong)    UIColor                 *toolbarRightTextColor;
+@property (nonatomic,copy) CGFloat(^componentWidthBlock)(NSInteger component);//pickView每列的宽度，默认100。
 
 /**
  *  通过plistName添加一个pickView
@@ -87,4 +91,7 @@
  *  设置toobar的背景颜色
  */
 - (void)setToolbarBGColor:(UIColor *)toolbarBGColor;
+- (void)setToolbarLeftTextColor:(UIColor *)toolbarLeftTextColor;
+- (void)setToolbarRightTextColor:(UIColor *)toolbarRightTextColor;
+- (void)setToolbarTitleTextColor:(UIColor *)toolbarTitleTextColor;
 @end

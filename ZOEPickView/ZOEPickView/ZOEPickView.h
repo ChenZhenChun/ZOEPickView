@@ -16,6 +16,7 @@
 @interface ZOEPickView : UIView
 @property (nonatomic,assign)    id<ZOEPickViewDelegate>  delegate;
 @property (nonatomic,readonly)  UIDatePicker            *datePicker;//获取时间控件
+@property (nonatomic,readonly) UIPickerView           *pickerView;
 @property (nonatomic,copy)      NSString                *title;//toolbar上的title
 @property (nonatomic,strong)    UIColor                 *pickViewBGColor;//设置PickView的背景色
 @property (nonatomic,strong)    UIColor                 *datePickerBGColor;//设置datePicker的背景色

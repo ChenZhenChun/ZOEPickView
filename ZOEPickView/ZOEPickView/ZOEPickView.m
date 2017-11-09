@@ -28,7 +28,6 @@
 @property (nonatomic,assign) NSInteger              pickeviewHeight;
 @property (nonatomic,copy)   NSString               *resultString;
 @property (nonatomic,copy)   NSString               *resultIndex;
-@property (nonatomic,strong) NSMutableArray         *componentArray;
 @property (nonatomic,strong) NSMutableArray         *dicKeyArray;
 @property (nonatomic,copy)   NSMutableArray         *state;
 @property (nonatomic,copy)   NSMutableArray         *city;
@@ -213,52 +212,52 @@
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    
-    if (_isLevelDic&&component%2==0) {
-        [pickerView reloadComponent:1];
-        [pickerView selectRow:0 inComponent:1 animated:YES];
-    }
-    if (_isLevelString) {
-        _resultString = _plistArray[row];
-        _resultIndex = [NSString stringWithFormat:@"%ld",(long)row];
-        
-    }else if (_isLevelArray){
-        _resultString=@"";
-        _resultIndex = @"";
-        if (![self.componentArray containsObject:@(component)]) {
-            [self.componentArray addObject:@(component)];
-        }
-        for (int i=0; i<_plistArray.count;i++) {
-            if ([self.componentArray containsObject:@(i)]) {
-                NSInteger cIndex = [pickerView selectedRowInComponent:i];
-                _resultString=[NSString stringWithFormat:@"%@%@",_resultString,_plistArray[i][cIndex]];
-                if (_resultIndex&&_resultIndex.length>0) {
-                    _resultIndex = [NSString stringWithFormat:@"%@,%ld",_resultIndex,(long)cIndex];
-                }else {
-                    _resultIndex = [NSString stringWithFormat:@"%ld",(long)cIndex];
-                }
-            }else{
-                _resultString=[NSString stringWithFormat:@"%@%@",_resultString,_plistArray[i][0]];
-                if (_resultIndex&&_resultIndex.length>0) {
-                    _resultIndex = [NSString stringWithFormat:@"%@,%d",_resultIndex,0];
-                }else {
-                    _resultIndex = [NSString stringWithFormat:@"%d",0];
-                }
-                
-                          }
-        }
-    }else if (_isLevelDic){
-        if (component==0) {
-          _state =_dicKeyArray[row][0];
-        }else{
-            NSInteger cIndex = [pickerView selectedRowInComponent:0];
-            NSDictionary *dicValueDic=_plistArray[cIndex];
-            NSArray *dicValueArray=[dicValueDic allValues][0];
-            if (dicValueArray.count>row) {
-                _city =dicValueArray[row];
-            }
-        }
-    }
+//
+//    if (_isLevelDic&&component%2==0) {
+//        [pickerView reloadComponent:1];
+//        [pickerView selectRow:0 inComponent:1 animated:YES];
+//    }
+//    if (_isLevelString) {
+//        _resultString = _plistArray[row];
+//        _resultIndex = [NSString stringWithFormat:@"%ld",(long)row];
+//
+//    }else if (_isLevelArray){
+//        _resultString=@"";
+//        _resultIndex = @"";
+//        if (![self.componentArray containsObject:@(component)]) {
+//            [self.componentArray addObject:@(component)];
+//        }
+//        for (int i=0; i<_plistArray.count;i++) {
+//            if ([self.componentArray containsObject:@(i)]) {
+//                NSInteger cIndex = [pickerView selectedRowInComponent:i];
+//                _resultString=[NSString stringWithFormat:@"%@%@",_resultString,_plistArray[i][cIndex]];
+//                if (_resultIndex&&_resultIndex.length>0) {
+//                    _resultIndex = [NSString stringWithFormat:@"%@,%ld",_resultIndex,(long)cIndex];
+//                }else {
+//                    _resultIndex = [NSString stringWithFormat:@"%ld",(long)cIndex];
+//                }
+//            }else{
+//                _resultString=[NSString stringWithFormat:@"%@%@",_resultString,_plistArray[i][0]];
+//                if (_resultIndex&&_resultIndex.length>0) {
+//                    _resultIndex = [NSString stringWithFormat:@"%@,%d",_resultIndex,0];
+//                }else {
+//                    _resultIndex = [NSString stringWithFormat:@"%d",0];
+//                }
+//
+//                          }
+//        }
+//    }else if (_isLevelDic){
+//        if (component==0) {
+//          _state =_dicKeyArray[row][0];
+//        }else{
+//            NSInteger cIndex = [pickerView selectedRowInComponent:0];
+//            NSDictionary *dicValueDic=_plistArray[cIndex];
+//            NSArray *dicValueArray=[dicValueDic allValues][0];
+//            if (dicValueArray.count>row) {
+//                _city =dicValueArray[row];
+//            }
+//        }
+//    }
 }
 
 // 每列宽度
@@ -421,13 +420,6 @@
         _plistArray=[[NSArray alloc] init];
     }
     return _plistArray;
-}
-
-- (NSArray *)componentArray{
-    if (!_componentArray) {
-        _componentArray=[[NSMutableArray alloc] init];
-    }
-    return _componentArray;
 }
 
 #pragma mark - 背景遮罩

@@ -306,41 +306,36 @@
         }
     }else {
         if (_pickerView) {
-            
-            if (_resultString) {
-                
-            }else{
-                if (_isLevelString) {
-                    NSInteger row = [_pickerView selectedRowInComponent:0];
-                    _resultString = [NSString stringWithFormat:@"%@",_plistArray[row]];
-                    _resultIndex = [NSString stringWithFormat:@"%ld",(long)row];
-                }else if (_isLevelArray){
-                    _resultString=@"";
-                    _resultIndex = nil;
-                    for (int i=0; i<_plistArray.count;i++) {
-                        NSInteger row = [_pickerView selectedRowInComponent:i];
-                        _resultString=[NSString stringWithFormat:@"%@%@",_resultString,_plistArray[i][row]];
-                        if (_resultIndex&&_resultIndex.length>0) {
-                            _resultIndex = [NSString stringWithFormat:@"%@,%ld",_resultIndex,row];
-                        }else {
-                            _resultIndex = [NSString stringWithFormat:@"%ld",row];
-                        }
+            if (_isLevelString) {
+                NSInteger row = [_pickerView selectedRowInComponent:0];
+                _resultString = [NSString stringWithFormat:@"%@",_plistArray[row]];
+                _resultIndex = [NSString stringWithFormat:@"%ld",(long)row];
+            }else if (_isLevelArray){
+                _resultString=@"";
+                _resultIndex = nil;
+                for (int i=0; i<_plistArray.count;i++) {
+                    NSInteger row = [_pickerView selectedRowInComponent:i];
+                    _resultString=[NSString stringWithFormat:@"%@%@",_resultString,_plistArray[i][row]];
+                    if (_resultIndex&&_resultIndex.length>0) {
+                        _resultIndex = [NSString stringWithFormat:@"%@,%ld",_resultIndex,row];
+                    }else {
+                        _resultIndex = [NSString stringWithFormat:@"%ld",row];
                     }
-                }else if (_isLevelDic){
-                    
-                    if (_state==nil) {
-                        _state =_dicKeyArray[0][0];
-                        NSDictionary *dicValueDic=_plistArray[0];
-                        _city=[dicValueDic allValues][0][0];
-                    }
-                    if (_city==nil){
-                        NSInteger cIndex = [_pickerView selectedRowInComponent:0];
-                        NSDictionary *dicValueDic=_plistArray[cIndex];
-                        _city=[dicValueDic allValues][0][0];
-                        
-                    }
-                    _resultString=[NSString stringWithFormat:@"%@%@",_state,_city];
                 }
+            }else if (_isLevelDic){
+                
+                if (_state==nil) {
+                    _state =_dicKeyArray[0][0];
+                    NSDictionary *dicValueDic=_plistArray[0];
+                    _city=[dicValueDic allValues][0][0];
+                }
+                if (_city==nil){
+                    NSInteger cIndex = [_pickerView selectedRowInComponent:0];
+                    NSDictionary *dicValueDic=_plistArray[cIndex];
+                    _city=[dicValueDic allValues][0][0];
+                    
+                }
+                _resultString=[NSString stringWithFormat:@"%@%@",_state,_city];
             }
         }
     }

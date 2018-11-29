@@ -276,6 +276,10 @@
 
 #pragma mark - 显示控件
 - (void)show{
+    if (!_isDatePicker&&_pickerView&&!_pickerView.delegate&&!_pickerView.dataSource) {
+        _pickerView.delegate = self;
+        _pickerView.dataSource = self;
+    }
     [[UIApplication sharedApplication].keyWindow addSubview:self.bgView];
     [[UIApplication sharedApplication].keyWindow addSubview:self];
 }
@@ -482,8 +486,6 @@
     if (!_pickerView) {
         _pickerView = [[UIPickerView alloc] init];
         _pickerView.backgroundColor = [UIColor whiteColor];
-        _pickerView.delegate = self;
-        _pickerView.dataSource = self;
         _pickerView.frame = CGRectMake(0, ToobarHeight, [UIScreen mainScreen].bounds.size.width, _pickerView.frame.size.height);
         _pickeviewHeight = _pickerView.frame.size.height;
     }

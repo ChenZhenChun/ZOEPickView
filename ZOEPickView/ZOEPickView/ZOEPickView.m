@@ -108,7 +108,6 @@
     if (self) {
         _datePickerMode = datePickerMode;
         _isDatePicker = YES;
-        self.datePickerTemp.datePickerMode = datePickerMode;
         if (defaulDate)self.datePickerTemp.date = defaulDate;
         [self setFrameWith:isHaveNavControler];
         [self toolbar];
@@ -121,7 +120,6 @@
     if (self) {
         _datePickerMode = datePickerMode;
         _isDatePicker = YES;
-        self.datePickerTemp.datePickerMode = datePickerMode;
         if (defaulDate)self.datePickerTemp.date = defaulDate;
         [self setFrameWith:isHaveNavControler];
         [self toolbar];
@@ -135,7 +133,6 @@
     if (self) {
         _datePickerMode = datePickerMode;
         _isDatePicker = YES;
-        self.datePickerTemp.datePickerMode = datePickerMode;
         if (defaulDate)self.datePickerTemp.date = defaulDate;
         [self setFrameWith:isHaveNavControler];
         [self toolbar];
@@ -486,8 +483,8 @@
     if (!_pickerView) {
         _pickerView = [[UIPickerView alloc] init];
         _pickerView.backgroundColor = [UIColor whiteColor];
-        _pickerView.frame = CGRectMake(0, ToobarHeight, [UIScreen mainScreen].bounds.size.width, _pickerView.frame.size.height);
-        _pickeviewHeight = _pickerView.frame.size.height;
+        _pickerView.frame = CGRectMake(0, ToobarHeight, [UIScreen mainScreen].bounds.size.width, 216);
+        _pickeviewHeight = 216;
     }
     if (_datePickerTemp)[_datePickerTemp removeFromSuperview];
     [self addSubview:_pickerView];
@@ -498,9 +495,13 @@
     if (!_datePickerTemp) {
         _datePickerTemp = [[UIDatePicker alloc]init];
         _datePickerTemp.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
+        _datePickerTemp.datePickerMode = _datePickerMode;
+        if (@available(iOS 13.4, *)) {
+            _datePickerTemp.preferredDatePickerStyle = UIDatePickerStyleWheels;
+        }
+        _datePickerTemp.frame = CGRectMake(0, ToobarHeight,[[UIScreen mainScreen]bounds].size.width , 216);
         _datePickerTemp.backgroundColor=[UIColor whiteColor];
-        _datePickerTemp.frame = CGRectMake(0, ToobarHeight,[[UIScreen mainScreen]bounds].size.width , _datePickerTemp.frame.size.height);
-        _pickeviewHeight = _datePickerTemp.frame.size.height;
+        _pickeviewHeight = 216;
     }
     if (_pickerView)[_pickerView removeFromSuperview];
     [self addSubview:_datePickerTemp];
